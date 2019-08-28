@@ -2,16 +2,14 @@ package com.xx220xx.arduinomqttbluetooth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class TelaGeral extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        startActivity(new Intent(getApplicationContext(),TelaGeral.class));
-        finish();
+        setContentView(R.layout.activity_tela_geral);
+
     }
 }
