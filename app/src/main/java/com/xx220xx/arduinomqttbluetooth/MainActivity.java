@@ -1,11 +1,11 @@
 package com.xx220xx.arduinomqttbluetooth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.xx220xx.arduinomqttbluetooth.sources.ImersiveAcitvity;
+
+public class MainActivity extends ImersiveAcitvity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

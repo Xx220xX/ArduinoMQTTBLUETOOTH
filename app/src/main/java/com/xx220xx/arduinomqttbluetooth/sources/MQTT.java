@@ -1,96 +1,131 @@
 package com.xx220xx.arduinomqttbluetooth.sources;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttSecurityException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import java.util.Random;
+import java.io.UnsupportedEncodingException;
 
-public class MQTT {
-    String broker = "tcp://iot.eclipse.org:1883";
-    String client_UN_password = "cliente_name";
-    String client_PN_username = "password";
-    String publish_topic = "topico pub";
-    String subscribe_topic = "topico sub";
-    String mensagem = "none";
-    String client_id = "";
-    MqttAndroidClient androidClient;
+/**
+ * see https://www.hivemq.com/blog/mqtt-client-library-enyclopedia-paho-android-service/
+ */
+public class MQTT extends Comunicacao {
+    String server = "ssl://iot.eclipse.org:1883";
+    String clientId;
+    MqttAndroidClient client;
+    IMqttToken token;
+    String topicPub = "esp32/icaugAnd";
+    String topicSub = "esp32/icaugEsp";
+    int qos = 1;
 
-    public MQTT() {
-        this.client_id = "mqtt" + new Random().nextInt(5000 - 1) + 1;//1 ~ 4999
+    public MQTT(Activity activityAtual) {
+        clientId = MqttClient.generateClientId();
+        this.activityAtual = activityAtual;
+        client = new MqttAndroidClient(activityAtual.getApplicationContext(), server, clientId);
+
+
     }
 
-    public void onReceveMsg(String msg) {
 
-    }
+    @Override
+    public void start(Object... args) {
+        activityAtual = (Activity) args[0];
+        try {
+            client.subscribe(topicSub, qos);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        client.setCallback(new MqttCallback() {
+            @Override
+            public void connectionLost(Throwable throwable) {
+                onDisconect();
+            }
 
-    public void connect(Context context) {
-        if (androidClient.isConnected())
-            try {
-                disconnect(androidClient);
-            } catch (MqttException e) {
+            @Override
+            public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+                dadosReceived(new String(mqttMessage.getPayload()));
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
 
             }
-        androidClient = getMqttClient(context, broker, client_id, client_PN_username, client_UN_password);
-        callback();
+        });
+
     }
-    public String  subscribe(String topic_sub,int qos){
-        if(!androidClient.isConnected())
-            return null;
+
+    @Override
+    public void end() {
         try {
-            androidClient.subscribe(topic_sub,qos);
-        } catch (MqttSecurityException e) {
-            e.printStackTrace();
+            client.unsubscribe(topicSub);
         } catch (MqttException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-    private MqttAndroidClient getMqttClient(Context context, String broker, String client_id, String client_pn_username, String client_un_password) {
-        final MqttAndroidClient temp = new MqttAndroidClient(context,broker,client_id);
-        try{
-            MqttConnectOptions options = new MqttConnectOptions();
-            options.setCleanSession(false);
-            options.setAutomaticReconnect(true);
-            options.setUserName(client_pn_username);
-            options.setPassword(client_un_password.toCharArray());
-            IMqttToken token =temp.connect(options);
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken iMqttToken) {
-                    DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
-                    disconnectedBufferOptions.setBufferEnabled(true);
-                    disconnectedBufferOptions.setBufferSize(100);
-                    disconnectedBufferOptions.setPersistBuffer(false);
-                    disconnectedBufferOptions.setDeleteOldestMessages(false);
-                    temp.setBufferOpts(disconnectedBufferOptions);
-                }
 
-                @Override
-                public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
-                    Log.d("MQTT getClient","falha ");
-                }
-            });
+    }
+
+    @Override
+    public void send(String msg) {
+        byte[] encode;
+        try {
+            encode = msg.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            encode = msg.getBytes();
+            Log.e("mqtt", "falha em codificar bytes");
+            e.printStackTrace();
+        }
+        MqttMessage message = new MqttMessage(encode);
+        message.setRetained(true);
+        try {
+            client.publish(topicPub, message);
         } catch (MqttException e) {
             e.printStackTrace();
         }
-        return temp;
-    }
-
-    private void callback(){
 
     }
 
-    private void disconnect(MqttAndroidClient androidClient)throws MqttException {
+    @Override
+    public void conect(Object... args) throws MqttException {
+        /* // Outra maneira de conectar
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
+        IMqttToken token = client.connect(options);
+        */
+        IMqttActionListener actionListener;
+        if (args.length > 0 && args[0] instanceof IMqttActionListener)
+            actionListener = (IMqttActionListener) args[0];
+        else actionListener = new IMqttActionListener() {
+            @Override
+            public void onSuccess(IMqttToken iMqttToken) {
+
+            }
+
+            @Override
+            public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
+
+            }
+        };
+        token = client.connect(activityAtual.getApplicationContext(), actionListener);
+
 
     }
 
+    @Override
+    public boolean isConected() {
+        return client.isConnected();
+    }
+
+    @Override
+    public void disconect(String[] args) {
+
+    }
 }
-    

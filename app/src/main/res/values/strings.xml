@@ -1,3 +1,62 @@
 <resources>
     <string name="app_name">Arduino MQTT BLUETOOTH</string>
+    <string name="bluetooth">BLUETOOTH</string>
+    <string name="status">status:</string>
+    <string name="dispositivos_dispon_veis">Dispositivos disponíveis</string>
+    <string name="dispositivos_pareados">Dispositivos pareados</string>
+    <string name="conectando">Conectando...</string>
+    <string name="parar">PARAR</string>
+    <string name="parando">PARANDO..</string>
+    <string name="desativado">Desativado</string>
+    <string name="ativado">Ativado</string>
+    <string name="conectado">Conectado!</string>
+    <string name="terminal_mode">Terminal Mode</string>
+    <string name="desconectado">desconectado</string>
+    <string name="editar">Editar</string>
+    <string name="procurar">PROCURAR</string>
+    <string name="voltar">Voltar</string>
+    <string name="enviar">Enviar</string>
+    <string name="ok">OK</string>
+    <string name="copiado_para_area_de_tranferencia">Copiado para area de transferencia</string>
+    <string name="falha">FALHA</string>
+    <string name="dispositivo_nao_suportado">dispositivo não possui Bluetooth \nFechar aplicativo?</string>
+    <string name="bem_vindo">Bem vindo!!</string>
+    <string name="apagar_mensagem_status">apagar mensagem status</string>
+    <string name="config_botoes">configurações dos botões</string>
+    <string name="impossivel_enviar_caractere_nulo">impossivel enviar caractere nulo</string>
+    <string name="ativando">Ativando...</string>
+    <string name="desativando">Desativando...</string>
+    <string name="mqtt">MQTT</string>
+    <string name="title_activity_tela_configuracao">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="title_activity_tela_home">TelaHome</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_comando">Comando</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="menu_terminal">Terminal</string>
+    <string name="selecione_qual_modo_de_conex_o_voc_deseja">Selecione qual modo de conexão você deseja</string>
 </resources>
