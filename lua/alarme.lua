@@ -15,6 +15,6 @@ c.args[5] =  Args.new('Dias da semana','dropDown',[[Dias da semana que para repe
 c.args[5].list ={Domingo=1,Segunda=2,Terça=3,Quarta=4,Quinta=5,Sexta=6,Sábado=7}
 
 c.args[6] =  Args.new('Periodo','int',[[refere-se ao tempo em milissegundos que permanecera ligada]],'tempo invalido',function (t) return t>=0 end)
-
+c.version = 1.00
 return c
 
