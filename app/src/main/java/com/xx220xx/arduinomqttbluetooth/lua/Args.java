@@ -13,6 +13,7 @@ import com.xx220xx.arduinomqttbluetooth.R;
 
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 import java.util.Arrays;
 
@@ -22,11 +23,11 @@ import static android.view.Gravity.CENTER;
 public class Args extends JLuaClass {
     public static final String INT = "int", FLOAT = "float", STRING = "string", DROPDOWN = "dropDown";
 
-    public  static final   String LuaClass = "" +
+    public static final String LuaClass = "" +
             "Args = {}\n" +
             "Args.__index = Args\n" +
             "function Args.new(name, type, descricao, error, validar)\n" +
-            "    return setmetatable({ name = name, type = type, descricao = descricao, error = error, validar = validar,list={}}, Comando)\n" +
+            "    return setmetatable({ name = name, type = type, descricao = descricao, error = error, validar = validar,list={}}, Args)\n" +
             "end";
     private View myView;
 
@@ -34,6 +35,22 @@ public class Args extends JLuaClass {
         super(lval);
     }
 
+    public boolean valido() {
+        if (getType().equals(DROPDOWN)) {
+            return true;
+        }
+        Object n = null;
+        EditText self = (EditText) myView;
+        n = self.getText().toString();
+        if (getType().equals(INT)) {
+            n = Integer.parseInt(n.toString());
+        } else if (getType().equals(FLOAT)) {
+            n = Double.parseDouble(n.toString());
+        }
+        lclass.set("value", CoerceJavaToLua.coerce(n));
+        if (lclass.get("valida").isnil()) return true;
+        return lclass.get("validar").call(CoerceJavaToLua.coerce(n)).toboolean();
+    }
 
     public String getName() {
         return lclass.get("name").tojstring();
@@ -41,6 +58,9 @@ public class Args extends JLuaClass {
 
     public String getValue() {
         return lclass.get("value").tojstring();
+    }
+    public String getError(){
+        return lclass.get("error").tojstring();
     }
 
     public String getType() {
@@ -64,7 +84,6 @@ public class Args extends JLuaClass {
         }
         return s.substring(0, s.length() - 1);
     }
-
 
 
     private int getInputeType() {

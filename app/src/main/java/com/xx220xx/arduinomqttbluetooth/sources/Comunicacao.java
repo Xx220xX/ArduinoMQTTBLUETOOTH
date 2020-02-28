@@ -42,7 +42,7 @@ public abstract class Comunicacao {
 
     public static void setNow(Comunicacao c) {
         if (atual != null) {
-            atual.disconect(null);
+            atual.disconect((String[]) null);
         }
         atual = c;
     }

@@ -38,10 +38,10 @@ public class TelaControle extends ImersiveAcitvity {
             finish();
         }
 
-        info.setText(comando.getName() + "\n" + comando.getDescricao());
+        info.setText(String.format("%s\n%s", comando.getName(), comando.getDescricao()));
         generateLayout();
 
-      /*  comunicacao.setComunicacao(this,new Comunicacao.Comunicavel() {
+       comunicacao.setComunicacao(this,new Comunicacao.Comunicavel() {
             @Override
             public void onRequestFinish(int request, Object result) {
 
@@ -52,12 +52,13 @@ public class TelaControle extends ImersiveAcitvity {
                 Toast.makeText(getApplicationContext(), dados, Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onConnect(String bluetoothName, boolean Isconected) {
+           @Override
+           public void onConnect(String name) {
 
-            }
+           }
 
-            @Override
+
+           @Override
             public void onDisconect() {
                 Toast.makeText(getApplicationContext(), "Falha na comunicacao", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(),TelaGeral.class));
@@ -68,23 +69,23 @@ public class TelaControle extends ImersiveAcitvity {
             public void Log(String msg) {
 
             }
-        });*/
+        });
     }
 
     public void enviar(View v) {
-        String msg = comando.getCode() + ": ";
+        StringBuilder msg = new StringBuilder(comando.getCode() + ": ");
         boolean error = false;
-//        for (Args a : comando.getArgs()) {
-//            if (!a.valido()) {
-//                error = true;
-//                Toast.makeText(getApplicationContext(), a.getError(), Toast.LENGTH_SHORT).show();
-//                continue;
-//            }
-//            msg += a.getArgsCode();
-//        }
-//        if (error) return;
-
-//        Toast.makeText(getApplicationContext(), "enviado " + msg, Toast.LENGTH_SHORT).show();
+        for (Args a : comando.getArgs()) {
+            if (!a.valido()) {
+                error = true;
+                Toast.makeText(getApplicationContext(), a.getError(), Toast.LENGTH_SHORT).show();
+                continue;
+            }
+            msg.append(a.getValue());
+        }
+        if (error) return;
+        Toast.makeText(getApplicationContext(), "enviado " + msg, Toast.LENGTH_SHORT).show();
+        comunicacao.send(msg.toString());
     }
 
     private void generateLayout() {
