@@ -8,8 +8,8 @@ c.args[1].list['Tomada 2']=1
 c.args[1].list['Tomada 3']=2
 c.args[1].list['Tomada 4']=3
 
-c.args[2] =  Args.new('Meio periodo','float',[[refere-se ao periodo em segundos]],'tempo invalido, por segurança deve ser maior que 0.1',function (t) return t>=0.1 end)
-c.args[2].getValue = function (val ) return val/1000 end
+c.args[2] =  Args.new('periodo','float',[[para alternar entre on/off, está em segundos]],'tempo invalido, por segurança deve ser maior que 0.1',function (t) return t>=0.1 end)
+c.args[2].getValue = function (val ) return val*1000 end
 	
 return c
 
