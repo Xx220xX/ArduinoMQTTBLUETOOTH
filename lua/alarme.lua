@@ -14,7 +14,8 @@ c.args[4] =  Args.new('Segundo','int',[[]],'tempo invalido',function (t) return 
 c.args[5] =  Args.new('Dias da semana','dropDown',[[Dias da semana que para repetir alarme]])
 c.args[5].list ={Domingo=1,Segunda=2,Terça=3,Quarta=4,Quinta=5,Sexta=6,Sábado=7}
 
-c.args[6] =  Args.new('Periodo','int',[[refere-se ao tempo em milissegundos que permanecera ligada]],'tempo invalido',function (t) return t>=0 end)
+c.args[6] =  Args.new('Periodo','int',[[refere-se ao tempo em segundos que permanecera ligada]],'tempo invalido',function (t) return t>=0 end)
+c.args[6].getValue = function (val) return val/1000 end
 c.version = 1.00
 return c
 

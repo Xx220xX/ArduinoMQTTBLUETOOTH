@@ -8,6 +8,7 @@ c.args[1].list['Tomada 2']=1
 c.args[1].list['Tomada 3']=2
 c.args[1].list['Tomada 4']=3
 
-c.args[2] =  Args.new('Periodo','int',[[refere-se ao tempo que permanecera ligada]],'tempo invalido',function (t) return t>=0 end)
+c.args[2] =  Args.new('Periodo','float',[[refere-se ao tempo  em segundos que permanecera ligada]],'tempo invalido',function (t) return t>=0 end)
+c.args[2].getValue = function ( val )return val/1000 end
 return c
 
