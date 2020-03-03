@@ -16,7 +16,7 @@ import com.xx220xx.arduinomqttbluetooth.sources.ImersiveAcitvity;
 
 public class TelaControle extends ImersiveAcitvity {
     public static Comando c;
-    public static Comunicacao comunicacao;
+    public  Comunicacao comunicacao;
     RelativeLayout layout;
     Comando comando;
     TextView info;
@@ -29,7 +29,7 @@ public class TelaControle extends ImersiveAcitvity {
         info = findViewById(R.id.tela_controle_info);
         comando = c;
         c = null;
-
+        comunicacao = Comunicacao.now();
         if (comunicacao == null|| !comunicacao.isConected()) {
             Toast.makeText(getApplicationContext(),"Desconectado",Toast.LENGTH_SHORT).show();
 
@@ -37,6 +37,7 @@ public class TelaControle extends ImersiveAcitvity {
             startActivity(intent);
             finish();
         }
+        comunicacao.start(this);
 
         info.setText(String.format("%s\n%s", comando.getName(), comando.getDescricao()));
         generateLayout();
@@ -81,7 +82,7 @@ public class TelaControle extends ImersiveAcitvity {
                 Toast.makeText(getApplicationContext(), a.getError(), Toast.LENGTH_SHORT).show();
                 continue;
             }
-            msg.append(a.getValue());
+            msg.append(a.getValue()+" ");
         }
         if (error) return;
         Toast.makeText(getApplicationContext(), "enviado " + msg, Toast.LENGTH_SHORT).show();
@@ -107,10 +108,7 @@ public class TelaControle extends ImersiveAcitvity {
 
     @Override
     public void onBackPressed() {
-        TelaHome.comunicacao = comunicacao;
         startActivity(new Intent(getApplicationContext(),TelaHome.class));
         finish();
-
-
     }
 }

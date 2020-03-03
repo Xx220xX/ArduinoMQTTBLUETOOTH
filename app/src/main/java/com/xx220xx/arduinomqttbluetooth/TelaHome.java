@@ -17,14 +17,13 @@ import com.xx220xx.arduinomqttbluetooth.sources.Comunicacao;
 import com.xx220xx.arduinomqttbluetooth.sources.ImersiveAcitvity;
 
 public class TelaHome extends ImersiveAcitvity {
-    public static Comunicacao comunicacao;
     private AppBarConfiguration mAppBarConfiguration;
-
+    private  Comunicacao comunicacao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_home);
-
+        comunicacao =  Comunicacao.now();
         if (comunicacao == null || !comunicacao.isConected()) {
             Toast.makeText(getApplicationContext(), "Desconectado", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, TelaGeral.class);

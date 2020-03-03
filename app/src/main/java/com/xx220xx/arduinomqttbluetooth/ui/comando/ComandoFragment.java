@@ -67,11 +67,9 @@ public class ComandoFragment extends Fragment {
         adapter = new RecyclerViewAdapter(getContext(), list);
         adapter.setClickListener((View v,int index)->{
             TelaControle.c = (Comando) adapter.getItem(index);
-            TelaControle.comunicacao = TelaHome.comunicacao;
-            TelaHome.comunicacao=null;
+
             startActivity(new Intent(getContext(), TelaControle.class));
 
-            getActivity().finish();
         });
         comandos.setLayoutManager(new LinearLayoutManager(getContext()));
         comandos.setAdapter(adapter);

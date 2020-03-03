@@ -26,10 +26,7 @@ public abstract class Comunicacao {
 
     protected String clientName;
 
-    @Deprecated
-    public void setComunicacao(Comunicavel comunicacao) {
-        this.comunicacao = comunicacao;
-    }
+
 
     public void setComunicacao(Activity activity, Comunicavel comunicacao) {
         this.activityAtual = activity;

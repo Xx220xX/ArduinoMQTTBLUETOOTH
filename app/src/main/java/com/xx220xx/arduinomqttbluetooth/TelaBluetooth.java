@@ -67,7 +67,7 @@ public class TelaBluetooth extends Activity {
     {
         Bluetooth.clear();
         bluetooth = new Bluetooth(this);
-        bluetooth.setComunicacao( new Comunicacao.Comunicavel(){
+        bluetooth.setComunicacao(this, new Comunicacao.Comunicavel(){
             @Override
             public void onRequestFinish(int request, Object result) {
                 switch (request) {
@@ -144,7 +144,6 @@ public class TelaBluetooth extends Activity {
             @Override
             public void onConnect(String bluetoothName) {
                 Toast.makeText(getApplicationContext(),"conectado a :"+bluetoothName,Toast.LENGTH_SHORT).show();
-                TelaHome.comunicacao = bluetooth;
                 startActivity(new Intent(getApplicationContext(),TelaHome.class));
                 finish();
             }

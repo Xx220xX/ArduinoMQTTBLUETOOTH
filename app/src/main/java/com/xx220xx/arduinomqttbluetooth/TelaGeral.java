@@ -44,7 +44,6 @@ public class TelaGeral extends ImersiveAcitvity {
                 @Override
                 public void onSuccess(IMqttToken iMqttToken) {
                     Toast.makeText(getApplicationContext(), "conectado", Toast.LENGTH_SHORT).show();
-                    TelaHome.comunicacao = mqtt;
                     Intent screenBluetooth = new Intent(getApplicationContext(), TelaHome.class);
                     startActivity(screenBluetooth);
                     finish();

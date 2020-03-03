@@ -26,6 +26,7 @@ public class Args extends JLuaClass {
     public static final String LuaClass = "" +
             "Args = {}\n" +
             "Args.__index = Args\n" +
+            "function Args.getValue(value) return value end\n"+
             "function Args.new(name, type, descricao, error, validar)\n" +
             "    return setmetatable({ name = name, type = type, descricao = descricao, error = error, validar = validar,list={}}, Args)\n" +
             "end";
@@ -37,6 +38,10 @@ public class Args extends JLuaClass {
 
     public boolean valido() {
         if (getType().equals(DROPDOWN)) {
+
+            Spinner sp = (Spinner) myView;
+            String selct = (String) sp.getSelectedItem();
+            lclass.set("value", lclass.get("list").get(CoerceJavaToLua.coerce(selct)));
             return true;
         }
         Object n = null;
@@ -57,9 +62,10 @@ public class Args extends JLuaClass {
     }
 
     public String getValue() {
-        return lclass.get("value").tojstring();
+        return lclass.get("getValue").call(lclass.get("value")).tojstring();
     }
-    public String getError(){
+
+    public String getError() {
         return lclass.get("error").tojstring();
     }
 

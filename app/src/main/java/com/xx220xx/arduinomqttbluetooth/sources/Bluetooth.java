@@ -52,6 +52,7 @@ public class Bluetooth extends Comunicacao {
      *
      */
     public Bluetooth(Activity activity) {
+        atual = this;
         activityAtual = activity;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (Build.VERSION.SDK_INT >= 23) {

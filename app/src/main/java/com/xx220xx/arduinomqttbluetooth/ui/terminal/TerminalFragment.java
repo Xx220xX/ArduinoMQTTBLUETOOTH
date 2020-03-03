@@ -15,19 +15,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.xx220xx.arduinomqttbluetooth.R;
 import com.xx220xx.arduinomqttbluetooth.TelaGeral;
-import com.xx220xx.arduinomqttbluetooth.sources.Bluetooth;
-import com.xx220xx.arduinomqttbluetooth.sources.ButtonEspecial;
 import com.xx220xx.arduinomqttbluetooth.sources.Comunicacao;
 
 public class TerminalFragment extends Fragment {
-
-    private TerminalViewModel terminalViewModel;
 
     private Button sendMsg;
     private EditText input;
@@ -36,16 +30,13 @@ public class TerminalFragment extends Fragment {
     private Comunicacao comunicacao;
 
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        terminalViewModel =
-                ViewModelProviders.of(this).get(TerminalViewModel.class);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_terminal, container, false);
 
 
         comunicacao = Comunicacao.now();
-        if (comunicacao == null|| !comunicacao.isConected()) {
-            Toast.makeText(getContext(),"Desconectado",Toast.LENGTH_SHORT).show();
+        if (comunicacao == null || !comunicacao.isConected()) {
+            Toast.makeText(getContext(), "Desconectado", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getContext(), TelaGeral.class);
             startActivity(intent);
             getActivity().finish();
@@ -78,37 +69,38 @@ public class TerminalFragment extends Fragment {
         });
 
 
-//        comunicacao.setComunicacao(new Comunicacao.Comunicavel() {
-//            @Override
-//            public void onRequestFinish(int request, Object result) {
-//
-//            }
-//
-//            @Override
-//            public void dadosReceived(String dados) {
-//                receiveAdpter.add(comunicacao.getClientName() + ": " + dados);
-//
-//            }
-//
-//            @Override
-//            public void onConnect(String bluetoothName, boolean Isconected) {
-//
-//            }
-//
-//            @Override
-//            public void onDisconect() {
-//                comunicacao.end();
-//                Comunicacao.clear();
-//                Toast.makeText(getContext(), "Desconectado", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(getContext(), TelaGeral.class));
-//                getActivity().finish();
-//            }
-//
-//            @Override
-//            public void Log(String msg) {
-//
-//            }
-//        });
+        comunicacao.setComunicacao(getActivity(), new Comunicacao.Comunicavel() {
+            @Override
+            public void onRequestFinish(int request, Object result) {
+
+            }
+
+            @Override
+            public void dadosReceived(String dados) {
+                receiveAdpter.add(comunicacao.getClientName() + ": " + dados);
+
+            }
+
+            @Override
+            public void onConnect(String name) {
+
+            }
+
+            @Override
+            public void onDisconect() {
+                comunicacao.end();
+                Comunicacao.clear();
+                Toast.makeText(getContext(), "Desconectado", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), TelaGeral.class));
+                getActivity().finish();
+            }
+
+            @Override
+            public void Log(String msg) {
+
+            }
+        });
+        comunicacao.start(getActivity());
         return root;
     }
 }
